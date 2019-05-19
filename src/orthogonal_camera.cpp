@@ -9,25 +9,21 @@ typedef vec3 Point;
 
 Orthogonal_camera::Orthogonal_camera(){};
 
-Orthogonal_camera::Orthogonal_camera(Point origin, Point vertical, Point horizontal, Point corner)
-	:Camera(origin,vertical,horizontal,corner){}
+Orthogonal_camera::Orthogonal_camera(Point origin, Point vertical, Point horizontal, Point corner, float direction)
+	:Camera(origin,vertical,horizontal,corner){
+		this->direction = direction;
+	}
 
 ray Orthogonal_camera::traceRay(float x, float y){
-
-	/*
 	
 	Point rayOrigin = corner + x*horizontal + y*vertical;
 
-	Point direction = rayOrigin;
+	Point target = rayOrigin;
 
-	direction[2] = (-1)*corner.z();
+	target[2] = direction;
 
-	ray generated(rayOrigin, direction);
+	ray generated(rayOrigin, target);
 
 	return generated;
-	*/
 
-	Point direction = corner + x*horizontal + y*vertical;
-	ray generated(origin, direction);
-	return generated;
 }

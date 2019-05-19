@@ -22,14 +22,18 @@ Camera::Camera(Point origin, Point vertical, Point horizontal, Point corner){
 }
 
 
-bool Camera::hit_sphere(const Point& center, float radius, const ray& r){
+float Camera::hit_sphere(const Point& center, float radius, const ray& r){
 	Point oc = r.origin() - center;
 	float a = dot(r.direction(),r.direction());
 	float b = 2.0 * dot(oc,r.direction());
 	float c = dot(oc, oc) - radius*radius;
 
 	float discriminant = b*b - 4*a*c;
-	return (discriminant > 0);
+	if(discriminant<0){
+		return -1.0;
+	}else{
+		return (-b - sqrt(discriminant)) / (2.0*a);
+	}
 }
 
 
@@ -45,9 +49,19 @@ Color Camera::fadeBG(const ray& r){
 }
 
 
-Color Camera::sample(const ray& r, shared_ptr<Primitive_list> world){
-	if(world->intersect_p(r,MINSIGHT,MAXSIGHT)){
+Color Camera::flatColor(const ray& r, shared_ptr<Primitive_list> world){
+	if((world->intersect_p(r,MINSIGHT,MAXSIGHT)) > 0){
 		return vec3(1,0,0);
+	}
+
+	return fadeBG(r);
+}
+
+Color Camera::hitColor(const ray& r, shared_ptr<Primitive_list> world){
+	float hitTime = world->intersect_p(r,MINSIGHT,MAXSIGHT);
+	if(hitTime > 0){
+		Color result = unit_vector(r.point_at_parameter(hitTime));
+		return 0.5*Color(result.x()+1,result.y()+1,result.z()+1);
 	}
 
 	return fadeBG(r);

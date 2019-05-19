@@ -59,7 +59,18 @@ shared_ptr<Camera> cameraFromJSON(JSON obj){
             }
         }
         if(obj["camera"]["type"].ToString()=="orthogonal"){
-            return make_shared<Orthogonal_camera>(aux[0],aux[1],aux[2],aux[3]);
+            //warning for no direction instruction
+            if (obj["camera"]["direction"].IsNull()){
+                std::cout<<"no direction instruction for orthogonal camera"<<std::endl;
+                return nullptr;
+            }
+            //warning for direction instruction without comma.
+            float direction_input = obj["camera"]["direction"].ToFloat();
+            if(direction_input == 0){
+                std::cout<<"warning! direction read as 0, always write real numbers with commas"<<std::endl;
+            }
+            
+            return make_shared<Orthogonal_camera>(aux[0],aux[1],aux[2],aux[3],direction_input);
         }else if(obj["camera"]["type"].ToString()=="perspective"){
             return make_shared<Perspective_camera>(aux[0],aux[1],aux[2],aux[3]);
         }else{

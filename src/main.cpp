@@ -39,8 +39,8 @@ int main(){
 			
 			ray r = cam->traceRay(u,v);
 
-			//COL recebe um raio
-			Color col = cam->sample(r, world);
+			//Col recebe a cor do que o raio atinge
+			Color col = cam->hitColor(r, world);
 
 			int ir  = int(255.99*col[0]);
 			int ig  = int(255.99*col[1]);

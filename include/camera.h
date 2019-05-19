@@ -22,11 +22,13 @@ public:
 
 	Camera(Point, Point, Point, Point);
 
-	bool hit_sphere(const Point&, float, const ray&);
+	float hit_sphere(const Point&, float, const ray&);
 
 	Color fadeBG(const ray&);
 
-	Color sample(const ray&, shared_ptr<Primitive_list> world);
+	Color flatColor(const ray&, shared_ptr<Primitive_list> world);
+
+	Color hitColor(const ray&, shared_ptr<Primitive_list> world);
 
 	virtual ray traceRay(float, float){}
 };
