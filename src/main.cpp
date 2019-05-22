@@ -17,14 +17,15 @@ using json::JSON;
 typedef vec3 Color;
 typedef vec3 Point;
 
+shared_ptr<Camera> cam;
+shared_ptr<Primitive_list> world;
+
 int main(){
 	
 	JSON obj = parseFile("./jsonInput/scene.json");
 
-	//TODO consertar câmera ortogonal
-	//Orthogonal_camera cam = Orthogonal_camera(Point(0,0,0),Point(0,2,0),Point(4,0,0),Point(-2,-1,-1));
-	shared_ptr<Camera> cam = cameraFromJSON(obj);
-	shared_ptr<Primitive_list> world = primitivesFromJSON(obj);
+	cam = cameraFromJSON(obj);
+	world = primitivesFromJSON(obj);
 
 	int nx = 200;
 	int ny = 100;
