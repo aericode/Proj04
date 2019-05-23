@@ -1,3 +1,7 @@
+#ifndef FLATMATERIALH
+#define	FLATMATERIALH
+
+#include "material.h"
 #include "vec3.h"
 
 typedef vec3 Color;
@@ -10,3 +14,5 @@ class FlatMaterial : public Material{
 
         Color getColor();
 };
+
+#endif

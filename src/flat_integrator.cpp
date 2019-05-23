@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "primitive_list.h"
 #include "plotter.h"
+#include "flat_integrator.h"
 
 typedef vec3 Color;
 
@@ -15,20 +16,20 @@ FlatIntegrator::FlatIntegrator(shared_ptr<Camera> camera){
 }
 
 void FlatIntegrator::render(shared_ptr<Primitive_list> g_world) {
-	nx = g_plotter.xSize;
-	ny = g_plotter.ySize;
+	int nx = g_plotter.xSize;
+	int ny = g_plotter.ySize;
 
 
-	for (int y = ny-1; j >= 0 ; y--){
-		for(int x = 0; i <  nx; x++){
+	for (int y = ny-1; y >= 0 ; y--){
+		for(int x = 0; x <  nx; x++){
 
 			float u = float(i) / float (nx);
 			float v = float(j) / float (ny);
 
-			Ray ray = g_camera->traceRay(u,v);
-            Color L = Li( ray, g_world ); // Determine the color for the ray.
+			ray r = main::g_camera->traceRay(u,v);
+            Color L = Li( r, g_world ); // Determine the color for the ray.
 
-            g_plotter.changePixel(x, y, L)
+            main::g_plotter.changePixel(x, y, L)
         }
     }
     // Send image color buffer to the output file.

@@ -108,7 +108,17 @@ shared_ptr<Primitive_list> primitivesFromJSON(JSON obj){
 
             materialAux = obj["primitives"][i][4].ToString();
 
-
+            if(obj["primitives"][i][4].IsNull()){
+                material = g_materials[3];
+            }else if(materialAux == "red"){
+                material = g_materials[0];
+            }else if(materialAux == "blue"){
+                material = g_materials[1];
+            }else if(materialAux == "green"){
+                material = g_materials[2];
+            }else{
+                material = g_materials[4];
+            }
 
             list[i] = new Sphere(aux, radius);
         }
