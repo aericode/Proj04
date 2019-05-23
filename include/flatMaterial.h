@@ -3,15 +3,15 @@
 
 #include "material.h"
 #include "vec3.h"
+#include <string>
 
 typedef vec3 Color;
 
 class FlatMaterial : public Material{
     public:
-    	Color color;
-
-        virtual ~Material();
-
+    	FlatMaterial();
+    	~FlatMaterial();
+    	FlatMaterial(Color,string);
         Color getColor();
 };
 

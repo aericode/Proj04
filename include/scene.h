@@ -1,20 +1,19 @@
+#include "camera.h"
+#include "ray.h"
+#include <memory>
+
+using namespace std;
+
 class Scene {
-    //=== Public data
-    public:
-        //std::vector<shared_ptr<Light>> lights; // list of lights
-        //std::shared_ptr< Background > background; // The background object.
+
     private:
-        std::shared_ptr<Primitive> aggregate; // The scene graph of objects, acceleration structure.
+        shared_ptr<Primitive> objects; // The scene graph of objects, acceleration structure.
+        shared_ptr<Camera> camera;
 
     //=== Public interface
     public:
-        Scene( std::shared_ptr<Primitive> ag, const std::vector<std::shared_ptr<Light>>& ls )
-            : aggregate{ag}//,lights{l}
-            {/* empty */}
-        /// Determines the intersection info; return true if there is an intersection.
-        bool intersect( const Ray& r, float, float, SurfaceInteraction &isect );
-        /*! A faster version that only determines whether there is an intersection or not;
-         * it doesn't calculate the intersection info.
-         */
-        bool intersect_p( const Ray& , float, float);
+        Scene( shared_ptr<Primitive> , shared_ptr<Camera>);
+
+        bool intersect( ray&, float, float, SurfaceInteraction);
+        bool intersect_p( ray& , float, float);
 };

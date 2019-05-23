@@ -16,8 +16,6 @@ class Primitive {
         // It does not compute the hit point information.
         virtual bool intersect_p( const ray& r, float t_min, float t_max ) = 0;
 
-        virtual Material get_material() = 0;
-
         void set_material(Material material_){material = material_;}
 };
 

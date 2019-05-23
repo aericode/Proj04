@@ -12,11 +12,9 @@ typedef vec3 Color;
 
 class FlatIntegrator : public Integrator {
 protected:
-    shared_ptr<const Camera> camera;
+    shared_ptr<Camera> camera;
 //=== Public interface
 public:
-    ~FlatIntegrator();
-    FlatIntegrator();
     FlatIntegrator(shared_ptr<Camera>);
 
     Color Li(ray& , shared_ptr<Primitive_list>);

@@ -1,3 +1,9 @@
+#define RED   Color(255,0,0)
+#define GREEN Color(0,255,0)
+#define BLUE  Color(0,0,255)
+#define BLACK Color(0,0,0)
+#define WHITE Color(255,255,255)
+
 #include "json.hpp"
 #include <iostream>
 #include <cstddef>
@@ -13,6 +19,7 @@
 #include "sphere.h"
 #include "primitive.h"
 #include "primitive_list.h"
+#include "material.h"
 
 
 using json::JSON;
@@ -20,6 +27,24 @@ using namespace std;
 
 typedef vec3 Color;
 typedef vec3 Point;
+
+
+//testando materiais
+vector<Material*> g_materials;
+
+void init_materials(){
+    Material* red   = new Material(RED,   "red"  );
+    Material* green = new Material(GREEN, "green");
+    Material* blue  = new Material(BLUE,  "blue" );
+    Material* black = new Material(BLACK, "black");
+    Material* white = new Material(WHITE, "white");
+
+    g_materials.push_back(red);
+    g_materials.push_back(green);
+    g_materials.push_back(blue);
+    g_materials.push_back(black);
+    g_materials.push_back(white);
+}
 
 string stringFromFile(string filename)
 {
@@ -95,7 +120,7 @@ shared_ptr<Primitive_list> primitivesFromJSON(JSON obj){
         Point aux;
         float radius;
         string materialAux;
-        Material material;
+        Material* material;
 
 
         for(int i =0; i < num_primitives; i++){
@@ -109,21 +134,20 @@ shared_ptr<Primitive_list> primitivesFromJSON(JSON obj){
             materialAux = obj["primitives"][i][4].ToString();
 
             if(obj["primitives"][i][4].IsNull()){
-                material = g_materials[3];
+                material->copy(*g_materials[3]);
             }else if(materialAux == "red"){
-                material = g_materials[0];
+                material->copy(*g_materials[0]);
             }else if(materialAux == "blue"){
-                material = g_materials[1];
+                material->copy(*g_materials[1]);
             }else if(materialAux == "green"){
-                material = g_materials[2];
+                material->copy(*g_materials[2]);
             }else{
-                material = g_materials[4];
+                material->copy(*g_materials[4]);
             }
 
-            list[i] = new Sphere(aux, radius);
+            list[i] = new Sphere(aux, radius, *material);
         }
 
         return make_shared<Primitive_list>(list, num_primitives);
     }
 }
-Material get_material()

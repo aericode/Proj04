@@ -3,20 +3,23 @@
 #include "camera.h"
 #include "primitive_list.h"
 #include "plotter.h"
+#include "material.h"
+#include "flatMaterial.h"
 #include "flat_integrator.h"
+
+#define MINSIGHT (float)0
+#define MAXSIGHT (float)100000
 
 typedef vec3 Color;
 
-FlatIntegrator::~FlatIntegrator(){}
-
-FlatIntegrator::FlatIntegrator(){}
 
 FlatIntegrator::FlatIntegrator(shared_ptr<Camera> camera){
 	this->camera = camera;
 }
 
 void FlatIntegrator::render(shared_ptr<Primitive_list> g_world) {
-	int nx = g_plotter.xSize;
+	/*
+    int nx = g_plotter.xSize;
 	int ny = g_plotter.ySize;
 
 
@@ -26,31 +29,34 @@ void FlatIntegrator::render(shared_ptr<Primitive_list> g_world) {
 			float u = float(i) / float (nx);
 			float v = float(j) / float (ny);
 
-			ray r = main::g_camera->traceRay(u,v);
+			ray r = camera->traceRay(u,v);
             Color L = Li( r, g_world ); // Determine the color for the ray.
 
-            main::g_plotter.changePixel(x, y, L)
+            //PLOTTER DESATIVADO
+            //main::g_plotter.changePixel(x, y, L)
         }
     }
-    // Send image color buffer to the output file.
-    g_plotter.plotFile();
+    //PLOTTER DESATIVADO
+    //g_plotter.plotFile();
+    */
 }
 
 
-Color FlatIntegrator::Li(const Ray& ray, shared_ptr<Primitive_list> g_world)
+Color FlatIntegrator::Li(ray& r, shared_ptr<Primitive_list> g_world)
 {
-    SurfaceInteraction isect;  
-    if (!scene.intersect(ray, &isect)) {
-        // This might be just:
-        L = g_camera -> fadeBG(r);
+    SurfaceInteraction isect; 
+    Color pixColor;
+
+    if (!g_world->intersect(r, MINSIGHT, MAXSIGHT, isect) ){
+
+        //get Background
+        pixColor = camera -> fadeBG(r);
     }
     else {
-        // Some form of determining the incoming radiance at the ray's origin.
-        // For this integrator, it might just be:
-        // Polymorphism in action.
-        FlatMaterial *fm = dynamic_cast< FlatMaterial *>( iscet.primitive->get_material() );
-        // Assign diffuse color to L.
-        L = fm->getColor(); // Call a method present only in FlatMaterial.
+        //downcast de material pra flatMaterial
+        FlatMaterial *fm = dynamic_cast< FlatMaterial *>( isect.primitive );
+        
+        pixColor = fm->getColor();
     }
-    return L;
+    return pixColor;
 }
