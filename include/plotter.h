@@ -14,13 +14,13 @@ typedef vec3 Color;
 class Plotter
 {
 private:
-
-	int xSize;
-	int ySize;
 	vector<Color> colorBuffer;
 	string fileName;
 
 public:
+	int xSize;
+	int ySize;
+
 	Plotter();
 
 	Plotter(int,int,string);

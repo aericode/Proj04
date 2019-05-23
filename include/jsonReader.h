@@ -94,6 +94,8 @@ shared_ptr<Primitive_list> primitivesFromJSON(JSON obj){
 
         Point aux;
         float radius;
+        string materialAux;
+        Material material;
 
 
         for(int i =0; i < num_primitives; i++){
@@ -104,9 +106,14 @@ shared_ptr<Primitive_list> primitivesFromJSON(JSON obj){
 
             radius = obj["primitives"][i][3].ToFloat();
 
+            materialAux = obj["primitives"][i][4].ToString();
+
+
+
             list[i] = new Sphere(aux, radius);
         }
 
         return make_shared<Primitive_list>(list, num_primitives);
     }
 }
+Material get_material()
